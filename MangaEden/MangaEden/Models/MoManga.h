@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-
+//test edit
 @class MoChapter;
 
 @interface MoManga : NSManagedObject
