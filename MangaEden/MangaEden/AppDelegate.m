@@ -46,9 +46,11 @@ NSString *const kAppReachibilityNotification = @"kAppReachibilityNotification";
     }
     homeViewController.managedObjectContext = self.managedObjectContext;
     homeViewController.persistentStoreCoordinator = self.persistentStoreCoordinator;
-    
+    UINavigationController *homeNavViewController = [[UINavigationController alloc] initWithRootViewController:homeViewController];
+    UINavigationController *nav2ViewController = [[UINavigationController alloc] initWithRootViewController:viewController2];
+
     self.tabBarController = [[UITabBarController alloc] init];
-    self.tabBarController.viewControllers = @[homeViewController, viewController2];
+    self.tabBarController.viewControllers = [NSArray arrayWithObjects:homeNavViewController,nav2ViewController, nil];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     return YES;
