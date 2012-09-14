@@ -30,4 +30,7 @@
 
 @property (strong, nonatomic) NSOperationQueue *operationQueue;
 -(void) loadAllARC;
+-(void) fetch;
+- (void) hideLoadingBar;
+-(void) updateLoadingBar:(NSNumber *) _value;
 @end
