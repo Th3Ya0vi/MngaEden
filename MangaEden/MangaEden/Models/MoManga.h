@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @class MoChapter;
-
+//
 @interface MoManga : NSManagedObject
 
 @property (nonatomic, retain) NSString * alphabetical;
