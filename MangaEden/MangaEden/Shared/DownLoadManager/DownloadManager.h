@@ -15,7 +15,7 @@
  DM_COMPLETE
  } STATUS;
  */
-//may be add some status
+//may be add some status sdfs
 enum {
 	DMNothing = 0,
 	DMDidFinishLoadingChapterPage,

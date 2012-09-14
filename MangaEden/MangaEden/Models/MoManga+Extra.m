@@ -12,7 +12,6 @@
 @implementation MoManga (Extra)
 #pragma mark -
 #pragma mark check if need to download anything
-// comment  ------------------
 - (BOOL) isNeedToDownloadMangaDetail
 {
     /*
