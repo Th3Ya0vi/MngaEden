@@ -15,7 +15,7 @@
 //NSString * const kBaseURL = @"http://komikconnect.com/plistmrquery10(not_reviewed).php?action=";
 
 NSString * const kBaseURL = @"http://komikconnect.com/plistmrquery10.php?action=";
-
+NSString * const kBaseURLManga = @"http://komikconnect.com/plistmrquery10.php?action=";
 #ifdef MRMF_APP
 NSString * const kBaseURL = @"http://komikconnect.com/plistmrmfquery201.php?action=";
 #endif

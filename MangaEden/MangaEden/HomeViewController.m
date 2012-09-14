@@ -131,6 +131,8 @@
     MoManga *manga = (MoManga*)[self.currentListFRC objectAtIndexPath:indexPath] ;
     MangaDetailViewController *mangaDetail = [[MangaDetailViewController alloc] init];
     mangaDetail.manga = manga;
+    mangaDetail.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    mangaDetail.managedObjectContext = self.managedObjectContext;
     [self.navigationController pushViewController:mangaDetail animated:YES];
 }
 #pragma mark -

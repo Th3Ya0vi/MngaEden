@@ -27,7 +27,7 @@
 	id <RetrieveChapterListOperationDelegate> delegate;		
 	NSManagedObjectID *aMangaObjectID;
 	
-	int manga_id;
+	NSString *manga_id;
 }
 
 @property (nonatomic, assign) id <RetrieveChapterListOperationDelegate> delegate;

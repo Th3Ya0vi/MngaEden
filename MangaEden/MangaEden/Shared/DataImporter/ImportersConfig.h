@@ -7,6 +7,7 @@
 //
 #import <Foundation/Foundation.h>
 extern NSString * const kBaseURL;
+extern NSString * const kBaseURLManga;
 
 extern NSString * const kRetrieveListActionName;
 extern NSString * const kSyncListActionName;

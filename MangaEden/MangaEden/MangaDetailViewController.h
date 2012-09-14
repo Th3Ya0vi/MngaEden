@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "MoManga+Extra.h"
+#import "RetrieveMangaInfoOperation.h"
+#import "RetrieveChapterListOperation.h"
+#import "ImageDownloaderOperation.h"
 
-@interface MangaDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface MangaDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, RetrieveChapterListOperationDelegate, RetrieveMangaInfoOperationDelegate, ImageDownloaderDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableViewChapter;
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *headerTableView;
 @property (strong, nonatomic) MoManga *manga;

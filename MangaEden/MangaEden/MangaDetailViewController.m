@@ -29,7 +29,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+
+    self.title = @"Loading..";
+    if ([self.manga isNeedToDownloadMangaDetail]) {
+        [self createAndStartRetrieveMangaInfoOp];
+    }
+    
+    if ([self.manga isNeedToDownloadMangaThumbnail]) {
+        [self createAndStartImgDownloadOp];
+    } else {
+        //[self populateThumbnailWithUIImage:[self.manga UIImageForThumbnail]];
+    }
+
 }
 
 - (void)viewDidUnload
@@ -80,4 +91,30 @@
 	
 	return nil;
 }
+#pragma mark -
+#pragma mark create and start operations
+- (void)createAndStartRetrieveMangaInfoOp{
+	RetrieveMangaInfoOperation *op = [[RetrieveMangaInfoOperation alloc] initWithPersistenceStoreCoordinator:self.persistentStoreCoordinator andMid:[self.manga.manga_id intValue]];
+	op.delegate = self;
+	[self.operationQueue addOperation:op];
+	op = nil;
+}
+
+- (void)createAndStartRetrieveChapterListOp{
+	RetrieveChapterListOperation *op2 = (RetrieveChapterListOperation *)[[RetrieveChapterListOperation alloc] initWithPersistenceStoreCoordinator:self.persistentStoreCoordinator andAMangaObjectID:[self.manga objectID]];
+	op2.delegate = self;
+	[self.operationQueue addOperation:op2];
+
+	op2 = nil;
+}
+
+- (void)createAndStartImgDownloadOp{
+	ImageDownloaderOperation *op = [[ImageDownloaderOperation alloc] initWithNSStringURL:self.manga.thumbnail_url];
+	op.delegate = self;
+	op.pathToSave = [self.manga constructThumbnailPath];
+	[self.operationQueue addOperation:op];
+	
+	op = nil;
+}
+
 @end

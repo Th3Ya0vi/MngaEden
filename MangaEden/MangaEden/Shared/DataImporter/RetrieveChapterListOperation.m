@@ -27,7 +27,7 @@
 	if	(self){
 		self.persistentStoreCoordinator = psc;
 		self.aMangaObjectID= objectID;
-		self->manga_id =  [[(MoManga *)[self.insertionContext objectWithID:self.aMangaObjectID] manga_id] intValue];
+		self->manga_id =  [(MoManga *)[self.insertionContext objectWithID:self.aMangaObjectID] manga_id];
 	}
 	return self;
 }
