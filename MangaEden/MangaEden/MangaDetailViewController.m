@@ -49,8 +49,7 @@
 #pragma mark UITableView Delegate
 
 - (void) tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //
-    NSLog(@"woathe fuck here");
+   
 }
 #pragma mark -
 #pragma mark UITableView Datasource

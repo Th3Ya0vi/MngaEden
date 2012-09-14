@@ -8,6 +8,8 @@
 
 #import "HomeViewController.h"
 #import "MoManga.h"
+#import "MangaDetailViewController.h"
+#import "AppSettings.h"
 @interface HomeViewController ()
 
 @end
@@ -63,10 +65,10 @@
 			
 			
 		} else {
-            /*
-			[self loadAllFRC];
+          
+			//[self loadAllFRC];
 			[self fetch];
-             */
+             
 		}
 	}
 
@@ -126,7 +128,10 @@
 
 - (void) tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     //
-    NSLog(@"woathe fuck here");
+    MoManga *manga = (MoManga*)[self.currentListFRC objectAtIndexPath:indexPath] ;
+    MangaDetailViewController *mangaDetail = [[MangaDetailViewController alloc] init];
+    mangaDetail.manga = manga;
+    [self.navigationController pushViewController:mangaDetail animated:YES];
 }
 #pragma mark -
 #pragma mark UITableView Datasource
@@ -230,6 +235,7 @@ long long fileSize = 0;
 }
 - (void) retrieveListOperationDidFinishImportingData{
     NSLog(@"Test retrieve list");
+    [AppSettings setLastUpdate:2];
     [self fetch];
     [self hideLoadingBar];
 	/*
@@ -290,13 +296,14 @@ long long fileSize = 0;
     NSLog(@"SyncListoperation will import data");
 }
 - (void)fetch {
-	DLog(@"fetch");
+	
 	[self.currentListFRC performFetch:nil];
     [self.tableViewListManga reloadData];
 }
 - (void) syncListOperationDidFinishImportingData{
 	if ([NSThread mainThread]) {
 		//[UIAppDelegate refreshUpdateFavInfoTabItemBadge];
+
 		[self fetch];
 		
 		[self performSelectorInBackground:@selector(getAnnoucement) withObject:nil];
