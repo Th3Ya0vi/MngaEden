@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		010C97FC15FDFE3E00A79E6E /* MangaDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 010C97FA15FDFE3E00A79E6E /* MangaDetailViewController.m */; };
 		010C97FD15FDFE3E00A79E6E /* MangaDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 010C97FB15FDFE3E00A79E6E /* MangaDetailViewController.xib */; };
+		01D78F3D1602F1CC00038ADC /* ImageDownloaderOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D78F3C1602F1CC00038ADC /* ImageDownloaderOperation.m */; };
 		C634D38715F739C70094CCCF /* CustomCatalogCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C634D38615F739C70094CCCF /* CustomCatalogCell.xib */; };
 		C634D3BB15F7402F0094CCCF /* browseChapterBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = C634D38A15F7402F0094CCCF /* browseChapterBackground.png */; };
 		C634D3BC15F7402F0094CCCF /* browseChapterBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C634D38B15F7402F0094CCCF /* browseChapterBackground@2x.png */; };
@@ -113,6 +114,8 @@
 		010C97F915FDFE3E00A79E6E /* MangaDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MangaDetailViewController.h; sourceTree = "<group>"; };
 		010C97FA15FDFE3E00A79E6E /* MangaDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MangaDetailViewController.m; sourceTree = "<group>"; };
 		010C97FB15FDFE3E00A79E6E /* MangaDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MangaDetailViewController.xib; sourceTree = "<group>"; };
+		01D78F3B1602F1CC00038ADC /* ImageDownloaderOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageDownloaderOperation.h; path = MangaEden/Shared/DataImporter/ImageDownloaderOperation.h; sourceTree = SOURCE_ROOT; };
+		01D78F3C1602F1CC00038ADC /* ImageDownloaderOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageDownloaderOperation.m; path = MangaEden/Shared/DataImporter/ImageDownloaderOperation.m; sourceTree = SOURCE_ROOT; };
 		C634D38615F739C70094CCCF /* CustomCatalogCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCatalogCell.xib; sourceTree = "<group>"; };
 		C634D38A15F7402F0094CCCF /* browseChapterBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = browseChapterBackground.png; sourceTree = "<group>"; };
 		C634D38B15F7402F0094CCCF /* browseChapterBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "browseChapterBackground@2x.png"; sourceTree = "<group>"; };
@@ -499,6 +502,8 @@
 		C6E8B3D915E88929001877F7 /* DownLoadManager */ = {
 			isa = PBXGroup;
 			children = (
+				01D78F3B1602F1CC00038ADC /* ImageDownloaderOperation.h */,
+				01D78F3C1602F1CC00038ADC /* ImageDownloaderOperation.m */,
 				C6E8B3DA15E88929001877F7 /* ChapterDownloader.h */,
 				C6E8B3DB15E88929001877F7 /* ChapterDownloader.m */,
 				C6E8B3DC15E88929001877F7 /* DownloadManager.h */,
@@ -756,6 +761,7 @@
 				C6F005B415EF6E8D00CD8824 /* ChapterPathUtility.m in Sources */,
 				C6EC79F015F59F6D00F7A680 /* AppSettings.m in Sources */,
 				010C97FC15FDFE3E00A79E6E /* MangaDetailViewController.m in Sources */,
+				01D78F3D1602F1CC00038ADC /* ImageDownloaderOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
