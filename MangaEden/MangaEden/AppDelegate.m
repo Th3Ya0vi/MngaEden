@@ -17,6 +17,8 @@ NSString *const kAppReachibilityNotification = @"kAppReachibilityNotification";
 @synthesize managedObjectContext = __managedObjectContext;
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
+@synthesize window;
+@synthesize tabBarController;
 
 
 
@@ -31,6 +33,8 @@ NSString *const kAppReachibilityNotification = @"kAppReachibilityNotification";
 			[[NSFileManager defaultManager] removeItemAtPath:storePath error:&error];
 			[AppSettings setLastUpdate:0];
 		}
+        NSLog(@"delete");
+        NSLog(@"stringpath = %@",storePath);
 	}
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
