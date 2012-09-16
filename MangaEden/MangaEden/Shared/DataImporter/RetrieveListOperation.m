@@ -76,7 +76,11 @@
         MoManga *myManga = [[MoManga alloc] initWithEntity:self.aMangaEntityDescription insertIntoManagedObjectContext:self.insertionContext];
         myManga.manga_id = mangaID;
         myManga.name = nameManga;
-
+        NSString *alphabetical = [[nameManga substringToIndex:1] uppercaseString];
+        if ([alphabetical characterAtIndex:0] < 'A' || [alphabetical characterAtIndex:0] > 'Z') {
+            alphabetical = @"#";
+        }
+        myManga.alphabetical = alphabetical;
     }
     NSError *saveError = nil;
     [self.insertionContext save:&saveError];

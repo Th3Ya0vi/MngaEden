@@ -14,19 +14,19 @@
 #pragma mark check if need to download anything
 - (BOOL) isNeedToDownloadMangaDetail
 {
-    /*
-	if (UIAppDelegateIphone.currentNetworkStatus == NotReachable) {
+/* repair later
+	if (UIAppDelegate.currentNetworkStatus == NotReachable) {
 		return NO;
 	}
-	*/
+*/
 	if ([self.new_updated_total intValue] > 0) {
 		return YES;
 	}
-	
+	/*
 	if ([[self.moChapters allObjects] count] != [self.total_chapter intValue]) {
 		return YES;
 	}
-	
+	*/
 	if (self.last_browsed_date == nil) {
 		return YES;
 	} else {

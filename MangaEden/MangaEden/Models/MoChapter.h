@@ -14,7 +14,7 @@
 @interface MoChapter : NSManagedObject
 
 @property (nonatomic, retain) NSDate * added_date;
-@property (nonatomic, retain) NSNumber * chapter_id;
+@property (nonatomic, retain) NSString * chapter_id;
 @property (nonatomic, retain) NSNumber * chapter_number;
 @property (nonatomic, retain) NSNumber * download_status;
 @property (nonatomic, retain) NSString * manga_id;

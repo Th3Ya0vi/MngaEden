@@ -2,7 +2,7 @@
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1487" systemVersion="12B19" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="MoChapter" representedClassName="MoChapter" syncable="YES">
         <attribute name="added_date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="chapter_id" attributeType="Integer 16" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="chapter_id" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="chapter_number" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="download_status" optional="YES" attributeType="Integer 16" defaultValueString="-1" indexed="YES" syncable="YES"/>
         <attribute name="manga_id" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
@@ -12,7 +12,7 @@
         <relationship name="moManga" optional="YES" minCount="1" maxCount="1" deletionRule="No Action" destinationEntity="MoManga" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="MoChapterDownloadQueue" representedClassName="MoChapterDownloadQueue" syncable="YES">
-        <attribute name="chapter_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="chapter_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="chapter_number" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="page_pos" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -51,7 +51,7 @@
     </entity>
     <entity name="MoMangaDownloadQueue" representedClassName="MoMangaDownloadQueue" syncable="YES">
         <attribute name="host_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="manga_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="manga_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="progress" optional="YES" attributeType="Float" defaultValueString="0" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>

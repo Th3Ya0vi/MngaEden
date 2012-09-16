@@ -24,12 +24,12 @@
 
 @interface RetrieveMangaInfoOperation : DataImporterOperation {
 	id <RetrieveMangaInfoOperationDelegate> delegate;		
-	int manga_id;
+	NSString *manga_id;
 }
 
 @property (nonatomic, assign) id <RetrieveMangaInfoOperationDelegate> delegate;
-@property (nonatomic) int manga_id;
-- (RetrieveMangaInfoOperation *)initWithPersistenceStoreCoordinator:(NSPersistentStoreCoordinator *)psc andMid:(int)aManga_id;
+@property (nonatomic, strong) NSString  *manga_id;
+- (RetrieveMangaInfoOperation *)initWithPersistenceStoreCoordinator:(NSPersistentStoreCoordinator *)psc andMid:(NSString *)aManga_id;
 
 
 @end

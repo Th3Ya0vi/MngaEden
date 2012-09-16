@@ -36,7 +36,7 @@
 #pragma mark sub class override methods;
 
 - (NSString *)stringForURL{	
-	return [[NSString stringWithFormat:@"%@%@&mid=%d",kBaseURL,kRetrieveChapterListActionName,self->manga_id] 
+	return [[NSString stringWithFormat:@"%@%@",kBaseURLManga,self->manga_id]
 			stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];	
 }
 
@@ -70,7 +70,7 @@
 	NSError *error;	
 		
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSEntityDescription *chapterEntity = [NSEntityDescription entityForName:@"aChapter" inManagedObjectContext:self.insertionContext];
+	NSEntityDescription *chapterEntity = [NSEntityDescription entityForName:@"MoChapter" inManagedObjectContext:self.insertionContext];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"manga_id = %d",self->manga_id];
 	NSArray *sortDescriptors = [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"chapter_number" ascending:YES] autorelease]];	
 	

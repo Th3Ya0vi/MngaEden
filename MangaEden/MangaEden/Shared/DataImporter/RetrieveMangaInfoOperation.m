@@ -8,7 +8,7 @@
 
 #import "RetrieveMangaInfoOperation.h"
 #import "MoManga+Extra.h"
-
+#import "MoChapter.h"
 @implementation RetrieveMangaInfoOperation
 @synthesize delegate,manga_id;
 
@@ -22,7 +22,7 @@ BOOL isNeedToRefresh;
 
 #pragma mark -
 #pragma mark init
-- (RetrieveMangaInfoOperation *)initWithPersistenceStoreCoordinator:(NSPersistentStoreCoordinator *)psc andMid:(int)aManga_id;{
+- (RetrieveMangaInfoOperation *)initWithPersistenceStoreCoordinator:(NSPersistentStoreCoordinator *)psc andMid:(NSString *)aManga_id;{
 	self = [super init];
 	if	(self){
 		self.persistentStoreCoordinator = psc;
@@ -35,8 +35,9 @@ BOOL isNeedToRefresh;
 #pragma mark -
 #pragma mark sub class override methods;
 
-- (NSString *)stringForURL{	
-	return [[NSString stringWithFormat:@"%@%@&mid=%d",kBaseURL,kRetrieveMangaInfoActionName,self.manga_id] 
+- (NSString *)stringForURL{
+  
+	return [[NSString stringWithFormat:@"%@%@",kBaseURLManga,self.manga_id]
 			stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];	
 }
 
@@ -59,56 +60,50 @@ BOOL isNeedToRefresh;
 }
 - (NSError *)processData:(NSData *)content{
 	
-	NSPropertyListFormat format;
-	NSString *desc;
+    //parse out the json data
+    NSError* error;
+    NSDictionary* jsonDict = [NSJSONSerialization JSONObjectWithData:content
+                                                         options:kNilOptions
+                          
+                                                           error:&error];
+    
+   	
+	int completed = [[jsonDict objectForKey:@"status"] intValue];
+	NSString *author = [[jsonDict objectForKey:@"author"] stringByDecodingXMLEntities];
+	NSString *name = [[jsonDict objectForKey:@"title"] stringByDecodingXMLEntities];
 	
-	id plist = [NSPropertyListSerialization propertyListFromData:content mutabilityOption:0 format:&format errorDescription:&desc];	
+    int rank = [[jsonDict objectForKey:@"hits"] intValue];
 	
-	NSDictionary *aDict = (NSDictionary *)plist;
+	long long last_update = [[jsonDict objectForKey:@"last_chapter_date"] longLongValue];
 	
-	int completed = [[aDict objectForKey:@"completed"] intValue];
-	NSString *author = [[aDict objectForKey:@"author"] stringByDecodingXMLEntities];
-	NSString *name = [[aDict objectForKey:@"name"] stringByDecodingXMLEntities];
-	int rank = [[aDict objectForKey:@"rank"] intValue];
-	if (rank == 0) {
-		rank = 9999;
-	}
+
+    NSArray *arrayChapter = (NSArray*)[jsonDict objectForKey:@"chapters"];
+
+    
+	int totalChapters = arrayChapter.count;
 	
-	long long last_update = [[aDict objectForKey:@"last_update"] longLongValue];
+	NSString *thumbnailUrl = [jsonDict objectForKey:@"image"];
 	
-	int direction = [[aDict objectForKey:@"direction"] intValue];
-	int totalChapters = [[aDict objectForKey:@"total_chapters"] intValue];
-	
-	NSString *thumbnailUrl = [aDict objectForKey:@"thumbnail_url"];
-	
-	NSArray *categories = [[aDict objectForKey:@"categories"] retain];
-	NSMutableString *categoriesString = [[NSMutableString alloc] initWithString:@""];
-	
+	NSArray *categories = [[jsonDict objectForKey:@"categories"] retain];
+	NSMutableString *categoriesString = [[NSMutableString alloc] initWithString:@""];	
 	for (NSString *aString in categories) {
-		//DLog(@"%@",aString);
-		[categoriesString appendString:aString];
-		
+		[categoriesString appendString:aString];		
 		if ([categories indexOfObject:aString] < [categories count] - 1) {
 			[categoriesString appendString:@","];
 		}
 	}
 	
-	NSString *summary = [[aDict objectForKey:@"description"] stringByDecodingXMLEntities]; 
-	
-	DLog(@"completed = %d, author = %@, name = %@, rank = %d, direction = %d,  last_update = %lli, categories = %@, total chapter = %d, thumbnail url = %@",completed,author,name,rank,direction,last_update,categoriesString,totalChapters, thumbnailUrl);
-	
-	
+	NSString *summary = [[jsonDict objectForKey:@"description"] stringByDecodingXMLEntities];
 	MoManga *m = nil;
 		
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *mangaEntity = [NSEntityDescription entityForName:@"MoManga" inManagedObjectContext:self.insertionContext];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"manga_id = %d",self.manga_id];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"manga_id = %@",self.manga_id];
 	
 	[fetchRequest setEntity:mangaEntity];
 	[fetchRequest setPredicate:predicate];
 	[fetchRequest setFetchBatchSize:5];
 	
-	NSError *error;
 	NSArray *result = [self.insertionContext executeFetchRequest:fetchRequest error:&error];
 	
 	if ([result count] > 0) {
@@ -119,29 +114,80 @@ BOOL isNeedToRefresh;
 			m.author = author;
 			m.name = name;
 			m.rank = [NSNumber numberWithInt:rank];
-			m.direction = [NSNumber numberWithInt:direction];
 			m.last_update = [NSNumber numberWithLongLong:last_update];
 			m.categories = categoriesString;
 			m.license = [NSNumber numberWithInt:1];			
 			m.total_chapter = [NSNumber numberWithInt:totalChapters];
-			
-			//m.new_updated_total = [NSNumber numberWithInt:totalChapters - [m.total_chapter intValue]];
-			m.thumbnail_url = thumbnailUrl;
-			if ([m.rank intValue] < 1000) {
-				m.rank_index = [NSNumber numberWithInt:0]; 
-			} else {
-				int number = floor([m.rank intValue]/1000) * 1000;
-				m.rank_index = [NSNumber numberWithInt:number];
-			}
+            m.new_updated_total = 0;
+			m.thumbnail_url = thumbnailUrl;           
 			m.summary = summary;
+            //m.last_browsed_date = [NSDate date];
+            //m.moChapters = [NSSet setWithArray:arrayChapter];
 			NSString *alphabetical = [[name substringToIndex:1] uppercaseString];
 			if ([alphabetical characterAtIndex:0] < 'A' || [alphabetical characterAtIndex:0] > 'Z') {
 				alphabetical = @"#";
 			}
 			
-			m.alphabetical = alphabetical;	
+            NSError *error;            
+            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+            NSEntityDescription *chapterEntity = [NSEntityDescription entityForName:@"MoChapter" inManagedObjectContext:self.insertionContext];
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"manga_id = %@",self->manga_id];
+            NSArray *sortDescriptors = [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"chapter_number" ascending:YES] autorelease]];
+            
+            [fetchRequest setEntity:chapterEntity];
+            [fetchRequest setPredicate:predicate];
+            [fetchRequest setFetchBatchSize:20];
+            [fetchRequest setSortDescriptors:sortDescriptors];
+            
+            NSArray *result = [self.insertionContext executeFetchRequest:fetchRequest error:&error];            
+            NSAutoreleasePool *aPool = [[NSAutoreleasePool alloc] init];
+            int count = 0;
+            for (NSArray *item in arrayChapter) {
+                NSString *cid = [item objectAtIndex:3] ;
+                int chapterNumber = [[item objectAtIndex:0] intValue];
+                NSString * name = [item objectAtIndex:2] ;
+                if (name == (id) [NSNull null])
+                {
+                    name = [NSString stringWithFormat:@"Chapter: %i",chapterNumber];
+                }
+                BOOL isNeedToCreate = YES;
+                //just update when already have property MoChapter
+                if ([result count] != 0) {
+                    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chapter_id = %d",cid];
+                    NSArray *search = [result filteredArrayUsingPredicate:predicate];
+                    if ([search count] > 0) {
+                        MoChapter *c = [search objectAtIndex:0];
+                        if ([c.name caseInsensitiveCompare:name] != NSOrderedSame) {
+                            c.name = name;
+                        }                      
+                        isNeedToCreate = NO;
+                    } 
+                }
+                if (isNeedToCreate) {
+                    MoChapter *c = [[MoChapter alloc] initWithEntity:chapterEntity insertIntoManagedObjectContext:self.insertionContext];
+                    c.chapter_id = cid;
+                    c.chapter_number = [ NSNumber numberWithInt:chapterNumber];
+                    c.name = name;
+                   // c.total_page = [NSNumber numberWithInt:total_pages];
+                    c.manga_id = self->manga_id;
+                    c.moManga = m;
+                    [c release];
+                }	
+                
+                if (count > 150) {
+                    NSError *saveError = nil;
+                    [self.insertionContext save:&saveError];
+                    
+                    [aPool release];
+                    aPool = nil;
+                    aPool = [[NSAutoreleasePool alloc] init];
+                    count = 0;
+                }
+			m.alphabetical = alphabetical;
 			isNeedToRefresh = YES;
+            }
 		}
+        
 		[m release];
 		m = nil;		
 	}
@@ -153,8 +199,13 @@ BOOL isNeedToRefresh;
 	categories = nil;
 	
 	[fetchRequest release];
-	fetchRequest = nil;	
+	fetchRequest = nil;
+    
+    
+    //save array chapter id here
+    
 	return nil;
+   
 }
 
 #pragma mark -
@@ -162,7 +213,7 @@ BOOL isNeedToRefresh;
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-	DLog(@"-");
+	
 	[super connection:connection didReceiveResponse:response];
 	
 	if (self.delegate && [self.delegate respondsToSelector:@selector(retrieveMangaInfoOperationWillImportData:)]) {

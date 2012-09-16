@@ -13,13 +13,24 @@
 #import "ImageDownloaderOperation.h"
 
 @interface MangaDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, RetrieveChapterListOperationDelegate, RetrieveMangaInfoOperationDelegate, ImageDownloaderDelegate>
-@property (strong, nonatomic) IBOutlet UITableView *tableViewChapter;
-@property (strong, nonatomic) IBOutletCollection(UIView) NSArray *headerTableView;
+
 @property (strong, nonatomic) MoManga *manga;
+
+@property (strong, nonatomic) IBOutlet UITableView *tableViewChapter;
+@property (strong, nonatomic) IBOutlet UIView *headerTableView;
+
+
+@property (strong, nonatomic) IBOutlet UILabel *authorLable;
+@property (strong, nonatomic) IBOutlet UILabel *categoriesLabel;
+@property (strong, nonatomic) IBOutlet UILabel *artistLabel;
+@property (strong, nonatomic) IBOutlet UILabel *descriptionLabel;
 
 @property (strong, nonatomic) NSOperationQueue *operationQueue;
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultControllerChapter;
+
+-(void) populateUILabels;
+-(void) fetch;
 @end
