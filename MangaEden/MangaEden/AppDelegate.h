@@ -38,5 +38,4 @@ enum {
 - (void)retainNetworkIndicator;
 - (void)releaseNetworkIndicator;
 
-
 @end

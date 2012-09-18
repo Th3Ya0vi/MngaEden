@@ -33,4 +33,6 @@
 
 -(void) populateUILabels;
 -(void) fetch;
+- (void)createAndStartRetrieveMangaInfoOp;
+- (void)createAndStartImgDownloadOp;
 @end
